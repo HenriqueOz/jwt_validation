@@ -13,11 +13,16 @@ class SecurityController implements IController {
   @override
   Router configure(Router router) {
     router.get('/login', login);
+    router.get('/register', register);
 
     return router;
   }
 
   Future<Response> login(Request request) async {
-    return Response.ok(jsonEncode({'message': 'deu certo'}));
+    return Response.ok(jsonEncode({'message': 'login'}));
+  }
+
+  Future<Response> register(Request request) async {
+    return Response.ok(jsonEncode({'message': 'registro'}));
   }
 }

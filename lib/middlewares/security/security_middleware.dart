@@ -19,5 +19,7 @@ class SecurityMiddleware extends IMiddleware {
         'message': 'invalid token',
       }));
     }
+
+    return innerHandler(request);
   }
 }

@@ -21,6 +21,7 @@ class Env {
       List<String> lines = File('.env').readAsLinesSync();
       _env.addAll(_linesToMap(lines: lines));
       log.info(message: 'Environment loaded');
+      log.info(message: _env.toString());
     } on PathNotFoundException catch (e) {
       Logger.instance.error(message: '.env file not found', error: e);
     } on Exception catch (e, s) {
@@ -33,9 +34,11 @@ class Env {
 
     for (final String line in lines) {
       final List<String> split = line.split('=');
-      map.addAll({
-        split[0]: split[1],
-      });
+      if (split.length == 2) {
+        map.addAll({
+          split[0]: split[1],
+        });
+      }
     }
 
     return map;
