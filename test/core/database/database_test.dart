@@ -46,11 +46,15 @@ void main() {
     'Insert user method',
     () {
       test(
-        'Should insert a user inside the json and get that user',
+        'Should insert a user inside the json',
         () {
+          final int pastId = database.lastId;
           final String email = 'test@email.com';
           final String password = 'password';
+
           database.insertUser(email: email, password: password);
+
+          expect(database.lastId, pastId + 1);
         },
       );
     },

@@ -6,7 +6,7 @@ import 'package:auth_jwt/entities/user_entity.dart';
 import 'package:auth_jwt/helpers/crypt_helper.dart';
 
 class Database {
-  static int lastId = 0;
+  int lastId = 0;
 
   Database._() {
     final Map<String, dynamic> data = getJsonData();
@@ -17,7 +17,6 @@ class Database {
     }
 
     lastId = int.tryParse(data.keys.last) ?? 0;
-    print(lastId);
   }
 
   static final Database _instance = Database._();

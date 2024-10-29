@@ -5,7 +5,7 @@ import 'package:shelf_router/shelf_router.dart';
 class SecurityRouter implements IRouter {
   @override
   void configure(Router router) {
-    final SecurityController testController = SecurityController.instance;
+    final LoginController testController = LoginController.instance;
 
     router.mount('/auth', testController.configure(router).call);
   }
