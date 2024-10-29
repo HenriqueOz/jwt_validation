@@ -1,4 +1,4 @@
-enum EnvEnum {
+enum EnvExceptionType {
   fileNotFound,
 }
 
@@ -7,9 +7,9 @@ class EnvException {
 
   EnvException._({required this.message});
 
-  factory EnvException({required final EnvEnum type}) {
+  factory EnvException({required final EnvExceptionType type}) {
     switch (type) {
-      case EnvEnum.fileNotFound:
+      case EnvExceptionType.fileNotFound:
         return EnvException._(message: 'File Not Found');
     }
   }
