@@ -4,6 +4,7 @@ import 'dart:io';
 import 'package:auth_jwt/core/env/env.dart';
 import 'package:auth_jwt/core/logger/logger.dart';
 import 'package:auth_jwt/middlewares/content_type/content_type.dart';
+import 'package:auth_jwt/middlewares/security/security_middleware.dart';
 import 'package:auth_jwt/routes/routes.dart';
 import 'package:shelf/shelf.dart';
 import 'package:shelf/shelf_io.dart' as shelf_io;
@@ -18,7 +19,11 @@ Future<void> main(List<String> arguments) async {
   final String host = env['serverHost']!;
 
   final Routes routes = Routes();
-  final Handler pipeline = Pipeline().addMiddleware(logRequests()).addMiddleware(ContentType().handler).addHandler(routes.router.call);
+  final Handler pipeline = Pipeline()
+      .addMiddleware(logRequests())
+      .addMiddleware(ContentType().handler)
+      .addMiddleware(SecurityMiddleware().handler)
+      .addHandler(routes.router.call);
 
   final HttpServer server = await shelf_io.serve(pipeline, host, port);
 

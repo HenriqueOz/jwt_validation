@@ -37,4 +37,8 @@ class JwtHelper {
 
     return 'Bearer $accessToken';
   }
+
+  static JWT verifyToken({required String token}) {
+    return JWT.verify(token, SecretKey(_jwtSecret));
+  }
 }

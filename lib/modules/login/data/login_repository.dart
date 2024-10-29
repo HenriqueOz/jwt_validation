@@ -31,4 +31,12 @@ class LoginRepository {
       throw Exception();
     }
   }
+
+  void registerUser({required String email, required String password}) {
+    try {
+      database.insertUser(email: email, password: password);
+    } on Exception {
+      throw Exception();
+    }
+  }
 }
