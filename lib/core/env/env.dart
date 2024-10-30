@@ -21,7 +21,6 @@ class Env {
       List<String> lines = File('.env').readAsLinesSync();
       _env.addAll(_linesToMap(lines: lines));
       log.info(message: 'Environment loaded');
-      log.info(message: _env.toString());
     } on PathNotFoundException catch (e) {
       Logger.instance.error(message: '.env file not found', error: e);
     } on Exception catch (e, s) {

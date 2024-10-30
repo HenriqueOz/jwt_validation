@@ -21,6 +21,7 @@ class LoginController implements IController {
   @override
   Router configure(Router router) {
     router.get('/login', login);
+    router.get('/refresh', refresh);
     router.post('/register', register);
     router.get('/im_authenticate', authenticate);
 
@@ -41,13 +42,18 @@ class LoginController implements IController {
         throw Exception();
       }
 
-      final String accessToken = JwtHelper.generateJwtToken(
+      final String accessToken = JwtHelper.generateJwtAccessToken(
         userId: user.id,
         email: email,
       );
 
+      final String refreshToken = JwtHelper.generateJwtRefreshToken(
+        accessToken: accessToken,
+      );
+
       return Response.ok(jsonEncode({
         'access_token': accessToken,
+        'refresh_token': refreshToken,
       }));
     } on Exception catch (e, s) {
       log.error(message: 'Error while logging', error: e, stackTrace: s);
@@ -83,5 +89,19 @@ class LoginController implements IController {
       'message': 'your token is valid',
       'payload': jwt.payload,
     }));
+  }
+
+  Future<Response> refresh(Request request) async {
+    final int userId = int.parse(request.headers['user_id']!);
+    final String email = request.headers['email']!;
+
+    final String accessToken = JwtHelper.generateJwtAccessToken(email: email, userId: userId);
+    final String refreshToken = JwtHelper.generateJwtRefreshToken(accessToken: accessToken);
+
+    return Response(200,
+        body: jsonEncode({
+          'access_token': accessToken,
+          'refresh_token': refreshToken,
+        }));
   }
 }

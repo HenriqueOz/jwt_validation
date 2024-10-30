@@ -6,20 +6,7 @@ final Env env = Env.instance;
 class JwtHelper {
   static final String _jwtSecret = env['jwtSecret']!;
 
-  static String generateJwtToken({required int userId, required String email}) {
-    // final JWT jwt = JWT(
-    //   // Payload
-    //   {
-    //     'iss': 'https://test.com',
-    //     'sub': userId,
-    //     'aud': 'someone',
-    //     'exp': expiration.millisecondsSinceEpoch ~/ 1000,
-    //     'nbt': now.millisecondsSinceEpoch ~/ 1000,
-    //     'iat': now.millisecondsSinceEpoch ~/ 1000,
-    //     'jti': '',
-    //   },
-    // );
-
+  static String generateJwtAccessToken({required int userId, required String email}) {
     final JWT jwt = JWT(
       {
         'email': email,
@@ -32,10 +19,27 @@ class JwtHelper {
     final String accessToken = jwt.sign(
       SecretKey(_jwtSecret),
       notBefore: Duration(days: 0),
-      expiresIn: Duration(days: 1),
+      expiresIn: Duration(seconds: 10),
     );
 
     return 'Bearer $accessToken';
+  }
+
+  static String generateJwtRefreshToken({required String accessToken}) {
+    final JWT jwt = JWT(
+      {},
+      subject: accessToken,
+      audience: Audience(['somenone']),
+      issuer: 'maybe_i',
+    );
+
+    final String refreshToken = jwt.sign(
+      SecretKey(_jwtSecret),
+      notBefore: Duration(days: 0),
+      expiresIn: Duration(days: 15),
+    );
+
+    return 'Bearer $refreshToken';
   }
 
   static JWT verifyToken({required String token}) {
