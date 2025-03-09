@@ -1,4 +1,3 @@
 # JWT
 
-Http server for practice jwt validatio
-the .env file is intentionally uploaded
+Http server for practice jwt validation
