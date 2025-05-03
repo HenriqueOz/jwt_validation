@@ -1,3 +1,3 @@
 # JWT
 
-Http server for practice jwt validation
+Simple http server made in dart to practice JWT validation
